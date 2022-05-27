@@ -1,6 +1,6 @@
 <script>
 import { mapWritableState } from 'pinia'
-import { useProcessStore } from '../stores/counter'
+import { useUserStore } from '../stores/user'
 import axios from "axios";
 export default {
   el: "#login",
@@ -24,10 +24,10 @@ export default {
     // gives access to this.counter inside the component and allows setting it
     // this.counter++
     // same as reading from store.counter
-    ...mapWritableState(useProcessStore, ['counter']),
+    ...mapWritableState(useUserStore, ['access_token']),
     // same as above but registers it as this.myOwnName
-    ...mapWritableState(useProcessStore, {
-      myOwnName: 'counter',
+    ...mapWritableState(useUserStore, {
+      myOwnName: 'access_token',
     }),
   },
   methods: {
@@ -44,7 +44,7 @@ export default {
     localStorage.setItem("access_token", res.access_token);
     localStorage.setItem("user", res.user);
     localStorage.setItem("role", res.role);
-    this.$emit("doneLogin");
+    this.access_token=true;
   })
     .fail((err) => {
       console.log(err);
@@ -55,7 +55,8 @@ export default {
       
         console.log(this.user.email+" "+this.user.password)
         axios
-            .post("https://iproject-server-instavue.herokuapp.com/users/" + this.path, {
+             .post("https://iproject-server-instavue.herokuapp.com/users/" + this.path, {
+              //.post("http://localhost:3000/users/" + this.path, {
             email: this.user.email,
             password: this.user.password
           },{})
@@ -66,6 +67,7 @@ export default {
               console.log(res);
               localStorage.setItem("access_token", res.data.access_token);
               localStorage.setItem("email", res.data.email);
+              this.access_token=true;
               this.$router.push({name:"home"})
             }
 

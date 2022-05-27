@@ -31,6 +31,7 @@ export default {
     }),
   },
   created(){
+    let access_token=localStorage.getItem('access_token');
     axios
             .get("https://iproject-server-instavue.herokuapp.com/users/buy" ,{} ,{ headers: { access_token }})
           .then(res => {

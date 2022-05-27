@@ -4,6 +4,7 @@ export const useUserStore = defineStore({
   id: 'user',
   state: () => ({
     email: '',
+    access_token: false,
     coin:0
   }),
   getters: {

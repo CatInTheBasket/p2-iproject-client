@@ -87,10 +87,11 @@ export default {
             headers: { access_token }
           })
           .then(res => {
-            console.log(res.data);
-            this.post = res.data;
-            console.log(this.post);
-            this.$emit("doneEdit", this.post);
+            //console.log(res.data.data);
+            this.post=res.data.data;
+            console.log(res.data.data.name);
+            // this.$emit("doneEdit", this.post);
+            this.$router.push({name:"edit",params:{name:res.data.data.name,description:res.data.data.description,imgUrl:res.data.data.imgUrl,location:res.data.data.location,tag:res.data.data.tag,typeId:res.data.data.typeId,statusArchieve:res.data.data.statusArchieve,coin:res.data.data.coin,id:res.data.data.id}})
           })
           .catch(e => {
             console.log(e.response.data);

@@ -4,7 +4,17 @@ export const usePostStore = defineStore({
   id: 'post',
   state: () => ({
     posts:[],
-    postDetail:{},
+    post:{
+      name:"",
+        description:"",
+        imgUrl:"",
+        location:"",
+        tag:"",
+        typeId:"",
+        statusArchieve:"",
+        coin:"",
+        id:""
+    },
     isFavourite:false
   }),
   getters: {

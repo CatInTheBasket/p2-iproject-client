@@ -43,12 +43,12 @@ const router = createRouter({
       path: '/edit',
       name: 'edit',
       component: EditPost,
-      props: {buttonText:"Edit"}
+      props: {path:"edit",buttonText:"Edit"}
     },{
       path: '/add',
       name: 'add',
       component: EditPost,
-      props: {buttonText:"Add"}
+      props: {path:"add",buttonText:"Add"}
     },
     {
       path: '/favourite',

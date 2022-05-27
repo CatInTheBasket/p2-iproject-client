@@ -11,22 +11,21 @@
         :type="inputType"
         class="form-control"
         :id="models"
-        v-model="models"
-        v-on:input="updateValue($event.target.value)"
+        v-model="post[modelValue]"
       />
       <textarea
         v-else
         class="form-control"
         :id="models"
-        v-model="models"
-        v-on:input="updateValue($event.target.value)"
+        v-model="post[modelValue]"
       />
     </div>
   </div>
 </template>
 
 <script>
-
+import { mapWritableState } from 'pinia'
+import { usePostStore } from '../stores/post'
 
 export default {
   mounted() {
@@ -37,21 +36,27 @@ export default {
       this.inputType = "number";
     }
   },
-  created(){
-    
+  computed: {
+    // gives access to this.counter inside the component and allows setting it
+    // this.counter++
+    // same as reading from store.counter
+    ...mapWritableState(usePostStore, ['post']),
+    // same as above but registers it as this.myOwnName
+    ...mapWritableState(usePostStore, {
+      myOwnName: 'post',
+    }),
   },
-  props: ["modelValue"],
+  created(){
+    this.post[this.modelValue]=this.attributes;
+  },
+  props: ["modelValue","attributes"],
   data() {
     return {
       models:this.modelValue,
-      inputType: "text"
+      inputType: "text",
+      attributes:this.attributes
     };
   },
-  watch: {
-      modelValue: function(value){
-      this.$emit('modelValue',value);
-    }
-  }
 };
 </script>
 
