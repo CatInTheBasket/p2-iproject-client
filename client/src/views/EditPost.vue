@@ -99,8 +99,8 @@ export default {
           this.error = e.response.data
         })
       }else{
-        //axios.post('https://iproject-server-instavue.herokuapp.com/post/', {
-          axios.post('http://localhost:3000/post/', {
+        axios.post('https://iproject-server-instavue.herokuapp.com/post/', {
+          //axios.post('http://localhost:3000/post/', {
             name:this.post.name,
         description:this.post.description,
         imgUrl:this.post.imgUrl,

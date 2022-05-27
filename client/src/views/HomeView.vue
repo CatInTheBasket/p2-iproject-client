@@ -38,9 +38,11 @@ export default {
   // let name = profile.getName();
   // let email = profile.getEmail(); 
    axios
-            .post("https://iproject-server-instavue.herokuapp.com/users/"+"/loginGoogle", {
+            // .post("https://iproject-server-instavue.herokuapp.com/users/"+"/loginGoogle", {
+              .post("http://localhost:3000.com/users/"+"/loginGoogle", {
             token:googleToken
           },{}).done((res) => {
+            console.log("Google sign in success");
     localStorage.setItem("access_token", res.access_token);
     localStorage.setItem("user", res.user);
     localStorage.setItem("role", res.role);
