@@ -1,6 +1,8 @@
 <script>
 import { mapWritableState } from 'pinia'
-import { useProcessStore } from '../stores/counter'
+import { usePostStore } from '../stores/post'
+import { useUserStore } from '../stores/user'
+
 import axios from "axios";
 import PostActionBar from '../components/PostActionBar.vue'
 
@@ -29,7 +31,7 @@ export default {
       console.log("Please login first");
     } else {
       axios
-        .get("http://localhost:3000/post/", { headers: { access_token } })
+        .get("https://iproject-server-instavue.herokuapp.com/post/", { headers: { access_token} })
         .then(res => {
           console.log(res.data);
           res.data.data.forEach(element => {
@@ -58,10 +60,12 @@ export default {
     // gives access to this.counter inside the component and allows setting it
     // this.counter++
     // same as reading from store.counter
-    ...mapWritableState(useProcessStore, ['counter']),
     // same as above but registers it as this.myOwnName
-    ...mapWritableState(useProcessStore, {
-      myOwnName: 'counter',
+    ...mapWritableState(usePostStore, {
+      postStore: 'post',
+    }),
+    ...mapWritableState(useUserStore, {
+      userStore: 'user',
     }),
   },
   methods: {
@@ -79,7 +83,7 @@ export default {
         console.log("Please login first");
       } else {
         axios
-          .get("http://localhost:3000/post/" + id, {
+          .get("https://iproject-server-instavue.herokuapp.com/post/" + id, {
             headers: { access_token }
           })
           .then(res => {
@@ -105,7 +109,7 @@ export default {
         let tempThis = this;
         this.curentPages++;
         axios
-          .get("http://localhost:3000/post?page=" + this.curentPages, {})
+          .get("https://iproject-server-instavue.herokuapp.com/post?page=" + this.curentPages, {})
           .then(res => {
             console.log(res.data);
             res.data.data.forEach(element => {
@@ -126,7 +130,7 @@ export default {
         console.log("Please login first");
       } else {
         axios
-          .delete("http://localhost:3000/post/" + event.target.value, {
+          .delete("https://iproject-server-instavue.herokuapp.com/post/" + event.target.value, {
             headers: { access_token }
           })
           .then(res => {
@@ -145,8 +149,8 @@ export default {
     hookOnScrollLoadMore() {
       window.onscroll = () => {
         let bottomOfWindow =
-          document.documentElement.scrollTop + window.innerHeight ===
-          document.documentElement.offsetHeight-50;
+          document.documentElement.scrollTop + window.innerHeight >=
+          document.documentElement.offsetHeight-150;
           console.log(document.documentElement.scrollTop + window.innerHeight +"  "+document.documentElement.offsetHeight );
         if (bottomOfWindow) {
           this.doLoadMore();
@@ -155,6 +159,7 @@ export default {
     },
     createPost() {
       console.log("redirect to post form");
+      this.$router.push({name:"add"})
     }
   
   }
@@ -170,7 +175,8 @@ export default {
         <div class="mb-3">
           <button @click="createPost" class="btn btn-dark">Create your own post</button>
         </div>
-        <h1>What you paid:</h1>
+        <div v-if="postsPaid.length>0">
+        <h1>What you have paid:</h1>
         <li v-for="item in postsPaid" :key="item">
           <div class="card">
             <img :src="item.imgUrl" class="img-fluid" :alt="item.imgUrl" />
@@ -191,6 +197,30 @@ export default {
             </div>
           </div>
         </li>
+        </div>
+        <div v-if="postsPaid.length>0">
+        <h1>Exclusive from other you follow:</h1>
+        <li v-for="item in postsFollowing" :key="item">
+          <div class="card">
+            <img :src="item.imgUrl" class="img-fluid" :alt="item.imgUrl" />
+            <div class="card-body">
+              <h3 class="card-title">{{item.name}}</h3>
+              <p class="card-text">{{item.description}}</p>
+
+              <p>Location: {{item.location}}</p>
+              <h5>By: {{item.User.email}}</h5>
+              <p class="card-subtitle mb-2 text-muted">{{item.createdAt}}</p>
+              <label class="btn btn-primary">{{item.Type.name}}</label>
+              <br />
+              <PostActionBar />
+              <div v-if="compareEmail(item.User.email)">
+                <button @click="doEdit(item.id)" :value="item.id">Edit</button>
+                <button @click="doDelete" :value="item.id">Archieve</button>
+              </div>
+            </div>
+          </div>
+        </li>
+        </div>
         <h1>Recent Post:</h1>
         <li v-for="item in posts" :key="item">
           <div class="card">

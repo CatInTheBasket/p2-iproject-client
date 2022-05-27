@@ -1,16 +1,20 @@
 import { defineStore } from 'pinia'
 
-export const useProcessStore = defineStore({
-  id: 'counter',
+export const useUserStore = defineStore({
+  id: 'user',
   state: () => ({
-    counter: 0
+    email: '',
+    coin:0
   }),
   getters: {
     doubleCount: (state) => state.counter * 2
   },
   actions: {
-    increment() {
-      this.counter++
+    setCoin(ammount) {
+      this.coin=ammount
+    },
+    logout(){
+      localStorage.clear();
     }
   }
 })

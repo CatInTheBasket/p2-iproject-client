@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import HomeListPost from '../views/HomeListPost.vue'
+import EditPost from '../views/EditPost.vue'
+import BuyView from '../views/BuyView.vue'
+
 import PostActionBar from "../components/PostActionBar.vue";
 
 const router = createRouter({
@@ -34,8 +37,18 @@ const router = createRouter({
     {
       path: '/buy',
       name: 'buy',
-      component: HomeView,
-      props: {path:"register",buttonText:"Register"}
+      component: BuyView
+    },
+    {
+      path: '/edit',
+      name: 'edit',
+      component: EditPost,
+      props: {buttonText:"Edit"}
+    },{
+      path: '/add',
+      name: 'add',
+      component: EditPost,
+      props: {buttonText:"Add"}
     },
     {
       path: '/favourite',
@@ -62,20 +75,32 @@ const router = createRouter({
 
 router.beforeEach((to, from, next)=>{
   if (localStorage.getItem('access_token')){
+    console.log(to.name);
     if(to.name=="login"||to.name=="register"){
+      
       next({
         path: 'home',
         replace: true
       })
     }else{
-      next();
+      console.log(to.name);
+      if(to.name=="edit"){
+        next();
+      }else{
+        next();
+      }
+      
     }
   }else{
+    // console.log(to.name);
     if(to.name!="login"&&to.name!="register"){
+      console.log(to.name);
       next({
         path: 'login',
         replace: true
       })
+    }else{
+      next();
     }
   }
 })

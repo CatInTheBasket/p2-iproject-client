@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia'
 
-export const useProcessStore = defineStore({
-  id: 'counter',
+export const useChatStore = defineStore({
+  id: 'chat',
   state: () => ({
-    counter: 0
+    chat:[],
+    chatDetail:{},
+    postId:-1
   }),
   getters: {
-    doubleCount: (state) => state.counter * 2
+    
   },
   actions: {
     increment() {

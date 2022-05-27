@@ -1,16 +1,18 @@
 import { defineStore } from 'pinia'
 
-export const useProcessStore = defineStore({
-  id: 'counter',
+export const usePostStore = defineStore({
+  id: 'post',
   state: () => ({
-    counter: 0
+    posts:[],
+    postDetail:{},
+    isFavourite:false
   }),
   getters: {
-    doubleCount: (state) => state.counter * 2
+
   },
   actions: {
-    increment() {
-      this.counter++
+    setPost(id) {
+      this.postDetail=this.posts[id];
     }
   }
 })

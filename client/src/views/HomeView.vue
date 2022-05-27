@@ -38,9 +38,9 @@ export default {
   // let name = profile.getName();
   // let email = profile.getEmail(); 
    axios
-            .post("http://localhost:3000/users/"+"/loginGoogle", {
+            .post("https://iproject-server-instavue.herokuapp.com/users/"+"/loginGoogle", {
             token:googleToken
-          },'').done((res) => {
+          },{}).done((res) => {
     localStorage.setItem("access_token", res.access_token);
     localStorage.setItem("user", res.user);
     localStorage.setItem("role", res.role);
@@ -55,10 +55,10 @@ export default {
       
         console.log(this.user.email+" "+this.user.password)
         axios
-            .post("http://localhost:3000/users/" + this.path, {
+            .post("https://iproject-server-instavue.herokuapp.com/users/" + this.path, {
             email: this.user.email,
             password: this.user.password
-          },'')
+          },{})
           .then(res => {
             if (this.buttonText != "Login") {
               this.$router.push({name:"login"})

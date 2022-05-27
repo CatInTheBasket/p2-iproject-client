@@ -28,7 +28,8 @@ export default {
       ilike:false,
       post: {},
       comments: [],
-      buttonText:"Show"
+      buttonText:"Show",
+      boolFav:false
     };
   },
   beforeMount() {
@@ -38,7 +39,7 @@ export default {
 //       console.log("Please login first");
 //     } else {
 //       axios
-//         .get("http://localhost:3000/post/"+post.id+"/comments", { headers: { access_token } })
+//         .get("https://iproject-server-instavue.herokuapp.com/post/"+post.id+"/comments", { headers: { access_token } })
 //         .then(res => {
 //           console.log(res.data);
 //           res.data.data.forEach(element => {
@@ -53,8 +54,22 @@ export default {
 //           this.error = e.response.data;
 //         });
 //     }
+
+  },
+  mounted(){
+    setInterval(this.myTimer, 3000)
   },
   methods: {
+    
+myTimer() {
+  if(this.boolFav){
+this.doFavourite()
+  }else{
+    this.doReply()
+  }
+  this.boolFav=!this.boolFav;
+  
+},
     doFavourite() {
         this.like++;
         this.ilike=!this.ilike;
@@ -75,7 +90,7 @@ export default {
         console.log("Please login first");
       } else {
         axios
-          .get("http://localhost:3000/post/" + id, {
+          .get("https://iproject-server-instavue.herokuapp.com/post/" + id, {
             headers: { access_token }
           })
           .then(res => {

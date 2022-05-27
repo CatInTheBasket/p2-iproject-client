@@ -1,6 +1,28 @@
 <script>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+import { RouterLink, RouterView } from 'vue-router';
+
+export default {
+  
+  data() {
+    return {
+      access_token: true
+    };
+  },
+  methods: {
+logout(){
+      localStorage.clear();
+      this.haveLocalStorage();
+      this.$router.push({name:"login"})
+    },
+    haveLocalStorage(){
+      if(localStorage.getItem('access_token')){
+        this.access_token=true;
+      }else{
+        this.access_token=false;
+      }
+    }
+  }
+}
 </script>
 
 <template>
@@ -10,17 +32,16 @@ import HelloWorld from '@/components/HelloWorld.vue'
     <div class="wrapper">
 <nav class="ms-3">
         <RouterLink to="/home">Home</RouterLink>
-        <RouterLink to="/login">Favourite</RouterLink>
-        <RouterLink to="/register">My Paid Content</RouterLink>
-
-        <RouterLink to="/about">My Post</RouterLink>
+        <RouterLink v-if="access_token" to="/favourite">Favourite</RouterLink>
+        <RouterLink v-if="access_token" to="/paid">My Paid Content</RouterLink>
+<!-- 
+        <RouterLink to="/about">My Post</RouterLink> -->
       </nav>
       <nav class="ms-auto">
-        <RouterLink to="/home">My Coin</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/register">Register</RouterLink>
-
-        <RouterLink to="/about">Logout</RouterLink>
+        <RouterLink v-if="access_token" to="/home">My Coin</RouterLink>
+        <RouterLink v-if="!access_token" to="/login">Login</RouterLink>
+        <RouterLink v-if="!access_token" to="/register">Register</RouterLink>
+        <button @click="logout">Logout</button>
       </nav>
     </div>
   </header>

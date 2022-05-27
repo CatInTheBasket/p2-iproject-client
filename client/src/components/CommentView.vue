@@ -40,7 +40,7 @@ export default {
   // let name = profile.getName();
   // let email = profile.getEmail(); 
    axios
-            .post("http://localhost:3000/users/"+"/loginGoogle", {
+            .post("iproject-server-instavue.herokuapp.com/users/"+"/loginGoogle", {
             token:googleToken
           },'').done((res) => {
     localStorage.setItem("access_token", res.access_token);
@@ -59,7 +59,7 @@ export default {
       } else {
         console.log(this.user.email+" "+this.user.password)
         axios
-            .post("http://localhost:3000/users/" + this.path, {
+            .post("https://iproject-server-instavue.herokuapp.com/users/" + this.path, {
             email: this.user.email,
             password: this.user.password
           },'')
